@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAZI Rent & Buy Cars</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #ecf0f1;
+        }
+
+        body {
+            background-color: #f5f6fa;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 50, 50, 0.95);
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: whitesmoke;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            margin: 0 1rem;
+            text-decoration: none;
+            color: whitesmoke;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            padding: 5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: var(--accent-color);
+        }
+
+        /* Hero Section */
+        #hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+            url('https://github.com/jobayersakib/hazirentacar/blob/main/assets/hero.jpg?raw=true') center/cover;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 400px;
+        }
+
+        /* Cards */
+        .card h3 {
+            font-size: 18px; /* Adjust the font size as needed */
+            margin-bottom: 10px; /* Ensures there is minimal space below the title */
+            transition: font-size 0.3s ease; /* Smooth transition for font size change */
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover h3 {
+            font-size: 24px; /* Increase font size on hover */
+            margin-bottom: 5px; /* Keeps minimal space below the title */
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+
+/* About and History Section - General Styling */
+#about .card, #history .card {
+    padding: 2rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: all 0.3s ease;
+    max-width: 80%; /* Prevent the box from exceeding the screen width */
+    margin: 1rem auto;
+    text-align: center; /* Center content */
+    transform: scale(1); /* Default scale */
+}
+
+/* Hover Effect for About and History Boxes */
+#about .card:hover, #history .card:hover {
+    background-color: #f9f9f9; /* Light background color on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow on hover */
+    transform: scale(1.05); /* Slight scale increase for "pop" effect */
+}
+
+/* About Section */
+#about {
+    background-color: #fafafa; /* Light background color for the section */
+    padding: 3rem 1rem;
+}
+
+/* History Section */
+#history {
+    background-color: #f3f3f3; /* Slightly different background for contrast */
+    padding: 3rem 1rem;
+}
+
+/* Section Title */
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 3px;
+    background: var(--accent-color);
+}
+
+/* About and History Image Styling */
+#about img, #history img {
+    margin-top: 1rem;
+    max-width: 80%;
+    border-radius: 8px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate {
+    animation: fadeIn 1s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #about .card, #history .card {
+        padding: 1rem;
+        max-width: 95%;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+       
+
+    /* Container to hold the cars */
+    .car-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(200px, 1fr)); /* 3 columns with a minimum width of 200px */ 
+        gap: 1rem; /* Space between items */
+        margin-top: 1rem;
+        justify-items: center; /* Centers the items horizontally */
+    }
+
+    /* Styling each car item */
+    .car-item {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 10px;
+        background-color: #fff;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+        max-width: 90%; /* Ensures the box doesn't take up too much space */
+    }
+
+    /* Hover effect for each car item */
+    .car-item:hover {
+        transform: scale(1.05);
+    }
+
+    /* Image styling */
+    .car-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Header styling for the section */
+    .section-title {
+        font-size: 2rem;
+        text-align: center;
+        color: #333;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    /* Responsive Design: Adjust for mobile view */
+    @media (max-width: 768px) {
+        .car-grid {
+            grid-template-columns: 1fr; /* Switch to single column on smaller screens */
+        }
+    }
+
+
+
+
+      /* Contact Section */
+.contact-info {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    text-align: center; /* Center align the address, phone, and email */
+}
+
+.contact-info p {
+    margin: 0.5rem 0;
+}
+
+.contact-info strong {
+    color: var(--accent-color);
+}
+
+/* Contact Icons Box */
+.contact-icons-box {
+    display: flex;
+    justify-content: center; /* Center the icons box */
+    align-items: center; /* Align icons vertically */
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    width: 100%; /* Adjust width as necessary */
+    max-width: 400px; /* Limit the max width of the icons box */
+    transition: background-color 0.3s ease; /* Optional hover effect on box */
+}
+
+/* Hover Effect for the Contact Icons Box */
+.contact-icons-box:hover {
+    background-color: #f2f2f2; /* Light background color on hover */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow on hover */
+}
+
+/* Contact Icons Styling */
+.contact-icons {
+    display: flex;
+    gap: 2rem;
+}
+
+.contact-icons a {
+    font-size: 2rem;
+    color: var(--primary-color);
+    transition: color 0.3s;
+}
+
+.contact-icons a:hover {
+    color: var(--accent-color);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate {
+    animation: fadeIn 1s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-info {
+        font-size: 1rem;
+    }
+
+    .contact-icons {
+        gap: 1.5rem;
+    }
+
+    .contact-icons-box {
+        max-width: 90%; /* Adjust the box size for mobile */
+    }
+}
+
+
+
+
+        .sales-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); ;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .car-sale-item {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 10px;
+        background-color: #fff;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out; /* Smooth transition for hover */
+    }
+    
+    .car-sale-item:hover {
+        transform: scale(1.05); /* Slight pop effect */
+    }
+
+    .car-sale-item img {
+        max-width: 70%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .car-sale-item h4 {
+        font-size: 1.2rem;
+        margin: 0.5rem 0;
+    }
+    
+    .car-sale-item p {
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    /* Advice Section */
+.advice-card {
+    background: linear-gradient(to right, #ff0505, #ff4810); /* Gradient background */
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 500px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    opacity: 0; /* Initially hidden for the animation */
+    animation: popUp 1s ease-out forwards; /* Ensure it stays visible after the animation */
+}
+
+.advice-card input, .advice-card textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    border: 2px solid #ddd;
+    font-size: 1rem;
+}
+
+.advice-card button {
+    background-color: #ff4c4c;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.advice-card button:hover {
+    background-color: #d43d3d;
+}
+
+.advice-card input:focus, .advice-card textarea:focus {
+    outline: none;
+    border-color: #ff0a0a;
+}
+
+/* Animation for Advice Section */
+@keyframes popUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Floating labels effect */
+label {
+    position: center;
+    top: -20px;
+    left: 10px;
+    font-size: 0.9rem;
+    color: #fff;
+    background-color: #ff4343;
+    padding: 0 10px;
+    transition: all 0.3s ease;
+}
+
+/* Effect when the input field is focused */
+input:focus + label, textarea:focus + label {
+    top: -20px;
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+/* Create space for the labels above the inputs */
+input, textarea {
+    position: relative;
+    padding-top: 20px;
+}
+
+
+        .footer {
+        text-align: center;
+        padding: 1rem;
+        background-color: rgba(255, 50, 50, 0.95);
+        color: #fff;
+        font-size: 0.9rem;
+        margin-top: 2rem;
+    }
+
+    /* News Section */
+.news-section {
+    padding: 5rem 2rem;
+    background-color: #f4f4f4;
+    text-align: center;
+    color: #333;
+}
+
+.news-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    justify-content: space-around;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.news-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.news-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.news-card:hover img {
+    transform: scale(1.05);
+}
+
+.news-content {
+    padding: 1.5rem;
+}
+
+.news-content h3 {
+    font-size: 1.8rem;
+    color: #e74c3c;
+    margin-bottom: 1rem;
+    transition: color 0.3s;
+}
+
+.news-content p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.news-content .read-more {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #e74c3c;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.news-content .read-more:hover {
+    color: #2c3e50;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate {
+    animation: fadeIn 1s ease-out;
+}
+
+    </style>
+
+
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">HAZI Rent-A-Car</div>
+            <div class="nav-links">
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#history">History</a>
+                <a href="#cars">Our-Fleet</a>
+                <a href="#sale">Buy&Sell</a>
+                <a href="#news">News</a>
+                <a href="#contact">Contact</a>
+                <a href="#advice">Advice</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="animate">
+        <div class="hero-content">
+            <h2>Premium Car Rental & Sales</h2>
+            <p>Experience luxury on wheels</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="animate">
+        <h2 class="section-title">About Us</h2>
+        <div class="card">
+            <p>
+                Sure! Here’s a well-crafted paragraph with around 250 words, highlighting the excellence of your car rental services:
+                
+                For over 20 years, we have been a trusted name in the car rental industry, offering top-quality vehicles and unmatched customer service. 
+                Our journey began with a simple vision—to provide reliable, comfortable, and affordable transportation solutions for every traveler.
+                Over the years, we have built a reputation for excellence, serving thousands of satisfied customers with dedication and professionalism.
+                
+                Our fleet consists of a wide range of vehicles, from budget-friendly sedans to luxury cars and SUVs, ensuring that our customers find the perfect ride for every occasion. 
+                Whether you need a car for business trips, family vacations, or special events, we have the ideal solution tailored to your needs. 
+                Each vehicle undergoes rigorous maintenance and quality checks to ensure safety and performance, giving you peace of mind on the road.
+                
+                Customer satisfaction is at the heart of everything we do.
+                Our seamless booking process, competitive pricing, and exceptional service make renting a car effortless. 
+                We pride ourselves on transparency, with no hidden fees or unnecessary paperwork.
+                Our team is always available to assist you, providing expert advice and support whenever needed.
+                
+                As we continue to grow, we remain committed to innovation, integrating the latest technology to enhance your rental experience.
+                From GPS-enabled navigation to easy online bookings, we strive to make your journey smooth and enjoyable.
+                With a strong foundation built on trust, reliability, and excellence, we look forward to serving you for many more years to come.</p>
+            <!-- Add your about image here -->
+            <img src="https://github.com/jobayersakib/hazirentacar/blob/main/assets/about.png?raw=true" alt="About Us" style="max-width: 100%; margin-top: 1rem;">
+
+        </div>
+    </section>
+
+
+    <!-- History Section -->
+<section id="history" class="animate">
+    <h2 class="section-title">Our History</h2>
+    <div class="card">
+        <p>Founded in 2003, we have been proudly serving our customers with exceptional car rental services for over 20 years.
+            What started as a small operation with a limited fleet has grown into one of the most trusted car rental providers in the industry.
+            Over the years, we have continuously expanded our fleet to include a wide variety of vehicles,
+            ensuring that we can meet the diverse needs of our customers, whether they are looking for an economical sedan, 
+            a spacious SUV, or a luxurious ride for a special occasion.
+
+            Our commitment to quality and customer satisfaction has been the driving force behind our growth. With every passing year, 
+            we have refined our services to offer more than just vehicle rentals;
+            we provide seamless travel experiences tailored to the individual needs of our clients.
+            From flexible rental periods to an easy-to-use booking platform,
+            we aim to make every aspect of the process as convenient and stress-free as possible.
+            
+            As the demand for reliable and affordable transportation continues to grow,
+            we have adapted by integrating the latest technology into our operations.
+            Our online booking system, real-time availability checks,
+            and customer support features ensure that renting a car is not only quick but also secure.
+            With over two decades of experience, we remain committed to delivering top-notch service,
+            and we look forward to continuing to serve our customers with excellence and care for many years to come.</p>
+        <!-- Add your history image here -->
+        <img src="https://github.com/jobayersakib/hazirentacar/blob/main/assets/his.jpg?raw=true" alt="Our History" style="max-width: 100%; margin-top: 1rem;">
+
+    </div>
+</section>
+
+
+<!-- Rent Cars Section -->
+<section id="cars" class="animate">
+    <h2 class="section-title">Our Fleet</h2>
+    <div class="car-grid" id="carContainer"></div>
+
+    <div class="card">
+        <h3>Luxury Cars</h3>
+        <div class="car-grid" id="luxuryCarsContainer">
+        
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Private Cars (Economic)</h3>
+        <div class="car-grid" id="privateCarsContainer">
+           
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Business Class Cars</h3>
+        <div class="car-grid" id="businessCarsContainer">
+          
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Toyota Hilux</h3>
+        <div class="car-grid" id="hiluxContainer">
+           
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Microbus</h3>
+        <div class="car-grid" id="microbusContainer">
+        
+        </div>
+    </div>
+</section>
+
+<!-- Car Sales Section -->
+<section id="sale" class="animate">
+    <h2 class="section-title">Cars for Sale</h2>
+    <div class="card">
+        <div class="sales-grid" id="salesContainer"></div>
+    </div>
+</section>
+
+
+<!-- News Section -->
+<section id="news" class="news-section animate">
+    <h2 class="section-title">Latest News</h2>
+    <div class="news-container">
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn1.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>New Fleet Addition</h3>
+                <p>We’ve just added new luxury vehicles to our fleet! Check out our latest collection of top-tier cars available for rent.</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn2.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>Seasonal Discount Offer</h3>
+                <p>Get amazing discounts on all rentals this season! Book your car now and save up to 30%.</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn3.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>Opening New Branches</h3>
+                <p>We are excited to announce the opening of new branches in multiple cities. Now you can rent our cars in even more locations!</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn4.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>Opening New Branches</h3>
+                <p>We are excited to announce the opening of new branches in multiple cities. Now you can rent our cars in even more locations!</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn1.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>New Fleet Addition</h3>
+                <p>We’ve just added new luxury vehicles to our fleet! Check out our latest collection of top-tier cars available for rent.</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn2.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>Seasonal Discount Offer</h3>
+                <p>Get amazing discounts on all rentals this season! Book your car now and save up to 30%.</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn3.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>Opening New Branches</h3>
+                <p>We are excited to announce the opening of new branches in multiple cities. Now you can rent our cars in even more locations!</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+        <div class="news-card">
+            <img src="https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cn4.jpg" alt="News 1">
+            <div class="news-content">
+                <h3>Opening New Branches</h3>
+                <p>We are excited to announce the opening of new branches in multiple cities. Now you can rent our cars in even more locations!</p>
+                <a href="https://www.autoexpress.co.uk/news/359420/car-news-2022-years-biggest-motoring-stories" class="read-more">Read More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<!-- Contact Section -->
+<section id="contact" class="animate">
+    <h2 class="section-title">Contact Us</h2>
+    <div class="card">
+        <!-- Contact Information -->
+        <div class="contact-info">
+            <p><strong>Address:</strong> House-12, Road-02, Banani, Amtoli, Dhaka-1213</p>
+            <p><strong>Phone:</strong> +880 1781-558283</p>
+            <p><strong>Email:</strong> contact@hazi.com</p>
+        </div>
+
+        <!-- Contact Icons in a Box -->
+        <div class="contact-icons-box">
+            <div class="contact-icons">
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/jobayer.sakibahmed/"><i class="fab fa-facebook-messenger"></i></a>
+                <a href="https://www.facebook.com/jobayer.sakibahmed/"><i class="fab fa-facebook"></i></a>
+                <a href="mailto:contact@hazi.com"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+ <!-- Advice Section -->
+<section id="advice" class="animate">
+    <h2 class="section-title">Share Your Advice</h2>
+    <div class="advice-card">
+        <form id="adviceForm">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" required placeholder="Enter your name">
+
+            <label for="whatsapp">WhatsApp Number</label>
+            <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Enter your WhatsApp number">
+
+            <label for="message">Your Message</label>
+            <textarea id="message" name="message" rows="4" required placeholder="Write your message..."></textarea>
+
+            <button type="submit" class="send-btn">Send Advice</button>
+        </form>
+    </div>
+</section>
+
+    <!-- Footer Section -->
+<footer class="footer">
+    <p>&copy; 2024 Hazi Car Rentals. All rights reserved.</p>
+    <p>Developed by <strong>Jobayer Ahmed Sakib</strong></p>
+</footer>
+
+
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+
+
+
+
+       // Car data - Add your car details here
+const cars = [
+    { name: "Mercedes S-Class", type: "Luxury", price: "$200/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr1.jpg" },
+    { name: "BMW 7 Series", type: "Luxury", price: "$220/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr2.jpg" },
+    { name: "Audi A8", type: "Luxury", price: "$210/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr3.jpg" },
+
+    { name: "Toyota Corolla", type: "Private", price: "$50/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr6.jpg" },
+    { name: "Honda Civic", type: "Private", price: "$55/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr5.jpg" },
+    { name: "Nissan Sunny", type: "Private", price: "$45/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr1.jpg" },
+
+    { name: "Tesla Model S", type: "Business", price: "$180/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr4.jpg" },
+    { name: "BMW 5 Series", type: "Business", price: "$170/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr2.jpg" },
+    { name: "Mercedes E-Class", type: "Business", price: "$160/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr3.jpg" },
+
+    { name: "Toyota Hilux", type: "Hilux", price: "$120/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr7.jpg" },
+    { name: "Ford Ranger", type: "Hilux", price: "$130/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr1.jpg" },
+
+    { name: "Toyota HiAce", type: "Microbus", price: "$100/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr6.jpg" },
+    { name: "Nissan Caravan", type: "Microbus", price: "$110/day", image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cr2.jpg" }
+];
+
+       function displayCars() {
+    const categories = {
+        "Luxury": document.getElementById("luxuryCarsContainer"),
+        "Private": document.getElementById("privateCarsContainer"),
+        "Business": document.getElementById("businessCarsContainer"),
+        "Hilux": document.getElementById("hiluxContainer"),
+        "Microbus": document.getElementById("microbusContainer")
+    };
+
+    cars.forEach(car => {
+        const carElement = document.createElement("div");
+        carElement.classList.add("car-item");
+        carElement.innerHTML = `
+            <img src="${car.image}" alt="${car.name}">
+            <h4>${car.name}</h4>
+            <p>${car.price}</p>
+        `;
+
+        if (categories[car.type]) {
+            categories[car.type].appendChild(carElement);
+        }
+    });
+}
+document.addEventListener("DOMContentLoaded", displayCars);
+
+ // Car Sales Data - Add your car details here
+ const carsForSale = [
+        { 
+            name: "Toyota Corolla Altis", 
+            modelYear: 2018, 
+            price: "22.5 Lac Taka", 
+            mileage: "20,000 miles", 
+            condition: "Used in Japan", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs1.jpg"
+        },
+        { 
+            name: "Honda Civic", 
+            modelYear: 2020, 
+            price: "৳18,500", 
+            mileage: "30,000 miles", 
+            condition: "Used", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs2.jpg"
+        },
+        { 
+            name: "BMW 3 Series", 
+            modelYear: 2022, 
+            price: "৳35,000", 
+            mileage: "10,000 miles", 
+            condition: "Certified Pre-Owned", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs3.jpg"
+        },
+        { 
+            name: "Mercedes-Benz C-Class", 
+            modelYear: 2021, 
+            price: "৳40,000", 
+            mileage: "15,000 miles", 
+            condition: "Certified Pre-Owned", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs4.jpg"
+        },
+
+        { 
+            name: "Toyota Corolla Altis", 
+            modelYear: 2018, 
+            price: "22.5 Lac Taka", 
+            mileage: "20,000 miles", 
+            condition: "Used in Japan", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs1.jpg"
+        },
+        { 
+            name: "Honda Civic", 
+            modelYear: 2020, 
+            price: "৳18,500", 
+            mileage: "30,000 miles", 
+            condition: "Used", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs2.jpg"
+        },
+        { 
+            name: "BMW 3 Series", 
+            modelYear: 2022, 
+            price: "৳35,000", 
+            mileage: "10,000 miles", 
+            condition: "Certified Pre-Owned", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs3.jpg"
+        },
+        { 
+            name: "Mercedes-Benz C-Class", 
+            modelYear: 2021, 
+            price: "৳40,000", 
+            mileage: "15,000 miles", 
+            condition: "Certified Pre-Owned", 
+            image: "https://raw.githubusercontent.com/jobayersakib/hazirentacar/main/assets/cs4.jpg"
+        }
+        
+    ];
+
+    function displaySalesCars() {
+        const salesContainer = document.getElementById("salesContainer");
+
+        carsForSale.forEach(car => {
+            const carElement = document.createElement("div");
+            carElement.classList.add("car-sale-item");
+            carElement.innerHTML = `
+                <img src="${car.image}" alt="${car.name}">
+                <h4>${car.name} (${car.modelYear})</h4>
+                <p><strong>Price:</strong> ${car.price}</p>
+                <p><strong>Mileage:</strong> ${car.mileage}</p>
+                <p><strong>Condition:</strong> ${car.condition}</p>
+            `;
+            salesContainer.appendChild(carElement);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", displaySalesCars);
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+
+    // Get the form and button elements
+    const adviceForm = document.getElementById("adviceForm");
+    const sendButton = document.querySelector(".send-btn");
+
+    // Handle the form submission
+    adviceForm.addEventListener("submit", function(event) {
+        event.preventDefault();  // Prevents the default form submission
+
+        // Get the values entered by the user
+        const name = document.getElementById("name").value;
+        const whatsapp = document.getElementById("whatsapp").value;
+        const message = document.getElementById("message").value;
+
+        // Display the collected information (you can replace this with any action like sending the data to a server)
+        console.log("Name:", name);
+        console.log("WhatsApp Number:", whatsapp);
+        console.log("Message:", message);
+
+        // Optionally, you can show a success message to the user
+        alert("Thank you for your advice! We will get back to you shortly.");
+
+        // Reset the form after submission
+        adviceForm.reset();
+    });
+
+
+// Optional JS to add a dynamic scroll effect to the news cards as they enter the viewport
+document.addEventListener('DOMContentLoaded', function() {
+    const newsCards = document.querySelectorAll('.news-card');
+    
+    const options = {
+        threshold: 0.2,
+    };
+
+    const observer = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, options);
+
+    newsCards.forEach(card => {
+        observer.observe(card);
+    });
+});
+
+
+</script>
+
+
+
+    </script>
+</body>
+</html>
